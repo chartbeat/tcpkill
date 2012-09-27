@@ -6,8 +6,6 @@
  * $Id: pcaputil.c,v 1.2 2001/03/15 08:33:04 dugsong Exp $
  */
 
-#include "config.h"
-
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>

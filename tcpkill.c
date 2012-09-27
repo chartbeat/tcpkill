@@ -8,8 +8,6 @@
  * $Id: tcpkill.c,v 1.17 2001/03/17 08:10:43 dugsong Exp $
  */
 
-#include "config.h"
-
 #include <sys/types.h>
 
 #include <stdio.h>
