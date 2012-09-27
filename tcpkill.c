@@ -25,12 +25,15 @@
 
 int	Opt_severity = DEFAULT_SEVERITY;
 int	pcap_off;
+pcap_t  *pd;
+int     Opt_max_kill = 0;
+int     kill_counter = 0;
 
 static void
 usage(void)
 {
 	fprintf(stderr, "Version: " VERSION "\n"
-		"Usage: tcpkill [-i interface] [-1..9] expression\n");
+		"Usage: tcpkill [-i interface] [-m max kills] [-1..9] expression\n");
 	exit(1);
 }
 
@@ -87,6 +90,11 @@ tcp_kill_cb(u_char *user, const struct pcap_pkthdr *pcap, const u_char *pkt)
                         (unsigned long) seq,
                         (unsigned long) seq);
 	}
+
+        ++kill_counter;
+        if (Opt_max_kill && kill_counter >= Opt_max_kill) {
+          pcap_breakloop(pd);
+        }
 }
 
 int
@@ -98,14 +106,16 @@ main(int argc, char *argv[])
 	char *p, *intf, *filter, ebuf[PCAP_ERRBUF_SIZE];
 	char libnet_ebuf[LIBNET_ERRBUF_SIZE];
 	libnet_t *l;
-	pcap_t *pd;
 	
 	intf = NULL;
 	
-	while ((c = getopt(argc, argv, "i:123456789h?V")) != -1) {
+	while ((c = getopt(argc, argv, "i:m:123456789h?V")) != -1) {
 		switch (c) {
 		case 'i':
 			intf = optarg;
+			break;
+		case 'm':
+			Opt_max_kill = atoi(optarg);
 			break;
 		case '0': case '1': case '2': case '3': case '4':
 		case '5': case '6': case '7': case '8': case '9':
