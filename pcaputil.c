@@ -58,7 +58,7 @@ pcap_dloff(pcap_t *pd)
 }
 
 pcap_t *
-pcap_init(char *intf, char *filter, int snaplen)
+pcaputil_pcap_init(char *intf, char *filter, int snaplen)
 {
 	pcap_t *pd;
 	u_int net, mask;
